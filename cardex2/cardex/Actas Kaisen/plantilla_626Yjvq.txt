@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Asistencias {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Registro de asistencias </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+{% endblock javascripts %}

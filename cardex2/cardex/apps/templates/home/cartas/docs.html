@@ -1,0 +1,471 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} documentos {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<div class="col-xl-12 order-xl-1">
+  <div class="card">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-12">
+          <h3 class="mb-0 text-center">Generacion de documentos </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+
+
+      <div class="card card-body align-items-center justify-content-center text-center">
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Documentos
+          </button>
+          <ul class="dropdown-menu">
+              <a class="dropdown-item">Opciones</a>
+            <div class="dropdown-divider"></div>
+          
+
+            <li><button class="dropdown-item" type="button"  value="{{user.id}}" onclick="enviarConstancia()"> <i class="fa-solid fa-file-circle-exclamation"></i>  Constancia</button></li>
+            <li><button class="dropdown-item" type="button"  value="{{user.id}}" onclick="enviarRenuncia()"><i class="fa-solid fa-file-excel"></i> Renuncia</button></li>
+            <li><button class="dropdown-item" type="button"  value="{{user.id}}" onclick="enviarFiniquito()"><i class="fa-solid fa-file-import"></i> Finiquito</button></li>
+          </ul>
+
+          
+          <button class="btn btn-danger" data-title="Limpiar Usuario" id="limpiar-select" onclick="limpiarCheckboxes()">
+            <i class="fa-solid fa-broom"></i>
+          </button>
+
+        </div>
+
+
+
+        <div class="d-flex align-items-center justify-content-center text-center" style="width: 100%; margin-top:10px; height: 5rem;">          
+          <form method="get" action="{% url 'cartas' %}" class="filter-form">
+            <div class="form-group">
+              <input type="text" name="search" value="{{ request.GET.search }}" class="search search-input"
+                placeholder="Buscar...">
+              <button type="submit" class="btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+              {% if request.GET.search %}
+              <a href="{% url 'cartas' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+
+
+
+        <table class="table text-center" id="myTable" style="width: 34rem;">
+          <thead>
+            <tr class="header">
+              <th scope="col" style="font-size: 13px; font-weight: bold;">Foto</th>
+              <th scope="col" style="font-size: 13px; font-weight: bold;">Usuario</th>
+              <th scope="col" style="font-size: 13px; font-weight: bold;">Departamento</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <th scope="row">
+                <div class="container-article">
+
+                  <input type="checkbox" name="selectedUsers" class="form-check-input" value="{{ user.username }}">
+
+                  &nbsp; <img src="{{ user.profile.image.url }}">
+
+                </div>
+              </th>
+              <td>{{user.information.first_name }} {{ user.information.last_name }}</td>
+              <td>{{user.information.departamento }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="card card-body" style="width: 50rem; border-style: none; margin-top: 2%;">
+          <!-- paginado -->
+          <div class="pagination">
+            <div class="previous">
+              {% if users.has_previous %}
+              <div class="previous-1">
+                <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+              </div>
+              <div class="previous-1">
+                <a href="?page={{ users.previous_page_number }}" class="btn-action"> <i
+                    class="fa-solid fa-angle-left"></i> </a>
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="current">
+              {% for page_num in page_numbers %}
+              {% if page_num == users.number %}
+              <span class="current-page">{{ page_num }}</span>
+              {% else %}
+              <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+              {% endif %}
+              {% endfor %}
+            </div>
+
+            <div class="next">
+              {% if users.has_next %}
+              <div class="next-1">
+                <a href="?page={{ users.next_page_number }}" class="btn-action"> <i
+                    class="fa-solid fa-angle-right"></i></a>
+              </div>
+              <div class="next-1">
+                <a href="?page={{ users.paginator.num_pages }}" class="btn-action"> <i
+                    class="fa-solid fa-angles-right"></i></a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <!-- paginado -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+{% include "includes/footer.html" %}
+
+<style>
+  .pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* Divide el contenedor en tres columnas de igual ancho */
+    height: 80px;
+  }
+
+  .previous {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .previous-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .current {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+  }
+
+  .next {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .next-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .current span {
+    padding: 15px;
+    background: #105db0;
+    color: white;
+    border-radius: 50%;
+    font-size: 15px;
+  }
+
+  .page-number {
+    border-style: solid;
+    padding: 5%;
+    border-radius: 15px;
+    color: white;
+    background-color: lightblue;
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+
+  .page-number:hover {
+    background: #105db0;
+  }
+
+  .btn-action:hover {
+    background: #105db0;
+    padding: 15px;
+    border-radius: 30%;
+    color: white;
+    z-index: 2;
+  }
+
+  .filter-form{
+    width: 100%;
+  }
+  .search-input {
+    width: 80%;
+  }
+
+  .clean-input {
+    font-size: 1rem;
+    padding: 0.4rem 1.4rem;
+    background: red;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+  }
+
+  
+  #myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #myInputname {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 18px;
+  }
+
+  #myTable th,
+  #myTable td {
+    text-align: center;
+    padding: 12px;
+  }
+
+  #myTable td {
+    height: 90px;
+  }
+
+  #myTable tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  #myTable tr.header,
+  #myTable tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .btn-doc {
+    background: #105db0;
+    color: white;
+    padding: 2%;
+    border-radius: 12px;
+  }
+
+  /* select de ventanas */
+
+  .custom-select {
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+    font-size: 1.15rem;
+    color: #000;
+    margin: auto;
+
+  }
+
+  .select-button {
+    width: 100%;
+    font-size: 1.15rem;
+    background-color: #fff;
+    padding-left: 35px;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    color: #105db0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .selected-value {
+    text-align: left;
+  }
+
+  .arrow {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #000;
+    transition: transform ease-in-out 0.3s;
+  }
+
+
+
+
+  [data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+[data-title]:after {
+    content: attr(data-title);
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    font-family: Raleway;
+    position: absolute;
+    padding: 3px 20px;
+    
+    left: 100%;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    border: 1px solid #111111;
+    z-index: 99999;
+    visibility: hidden;
+    border-radius: 6px;
+    
+}
+
+</style>
+{% endblock content %}
+
+{% block javascripts %}
+
+
+<!--SCRIPT PARA LIMPIAR CON EL BOTON EL BOX-->
+<script>
+  function limpiarCombo() {
+    // Restablece el valor seleccionado del cuadro de selección
+    var selectButton = document.querySelector('.select-button');
+    var selectedValue = selectButton.querySelector('.selected-value');
+    selectedValue.textContent = 'Opciones';
+  }
+
+  // Obtén todos los checkboxes secundarios por su clase
+  var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+  // Agrega un evento "change" a todos los checkboxes secundarios
+  checkboxesSecundarios.forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      // Si un checkbox secundario se marca, desmarca los demás
+      if (checkbox.checked) {
+        checkboxesSecundarios.forEach(function (otherCheckbox) {
+          if (otherCheckbox !== checkbox) {
+            otherCheckbox.disabled = true;
+          }
+        });
+      } else {
+        // Si un checkbox secundario se desmarca, habilita todos los checkboxes
+        checkboxesSecundarios.forEach(function (otherCheckbox) {
+          otherCheckbox.disabled = false;
+        });
+      }
+    });
+  });
+</script>
+
+<script>
+  function limpiarCheckboxes() {
+    // Obtén todos los checkboxes secundarios por su clase
+    var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+    // Itera a través de los checkboxes y desmárcalos
+    checkboxesSecundarios.forEach(function (checkbox) {
+      checkbox.checked = false;
+      checkbox.disabled = false; // Habilita todos los checkboxes al limpiar
+    });
+  }
+</script>
+
+<script>
+  function enviarConstancia() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    //selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+    var usernames = [];
+    // inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+    selectedUsers.forEach(function (user) {
+      //se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+      usernames.push(user.value);
+    });
+
+    if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+      window.location.href = '/constancia/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+      // Limpia el cuadro de selección después de la redirección
+      limpiarCombo();
+    } else {
+      alert('Por favor, selecciona al menos un usuario.');
+    }
+  }
+</script>
+
+<script>
+  function enviarRenuncia() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    //selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+    var usernames = [];
+    // inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+    selectedUsers.forEach(function (user) {
+      //se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+      usernames.push(user.value);
+    });
+
+    if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+      window.location.href = '/renuncia/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+      // Limpia el cuadro de selección después de la redirección
+      limpiarCombo();
+    } else {
+      alert('Por favor, selecciona al menos un usuario.');
+    }
+  }
+</script>
+
+
+
+<script>
+  function enviarFiniquito() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    //selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+    var usernames = [];
+    // inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+    selectedUsers.forEach(function (user) {
+      //se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+      usernames.push(user.value);
+    });
+
+    if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+      window.location.href = '/finiquito/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+      // Limpia el cuadro de selección después de la redirección
+      limpiarCombo();
+    } else {
+      alert('Por favor, selecciona al menos un usuario.');
+    }
+  }
+</script>
+
+{% endblock javascripts %}

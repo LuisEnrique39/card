@@ -1,0 +1,139 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="{% static 'jspdf.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+
+    </style>
+</head>
+
+<body>
+    <center>
+        <div class="container">
+            <form class="cons-div" id="form">
+
+                <div class="form-group">
+                    <label hidden="nombreInput">Nombre del colaborador:</label>
+                    <input type="text" class="form-control text-center" id="nombreInput"
+                        value="{{ user.information.first_name }} {{ user.information.last_name }}" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="puesto">Puesto De Desempeño:</label>
+                    <input type="text" class="form-control text-center" id="puesto"
+                        value="{{ user.information.puesto }}" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="departamento">Departamento:</label>
+                    <input type="text" class="form-control d-none" id="departamento"
+                        value="{{ user.information.departamento }}" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label for="id">N.o de empleado</label>
+                    <input type="text" class="form-control text-center" id="id" value="{{ user.id }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="ejemplo">Jefe Inmediato</label>
+                    <input type="text" class="form-control text-center" id="ejemplo" required>
+                </div>
+                <div class="form-group">
+                    <label for="persona">Tipo De Contrato</label>
+                    <input type="text" class="form-control text-center" id="persona" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Persona que queda a cargo de
+                        sus actividades en su ausencia</label>
+                    <input type="text" class="form-control text-center" id="tipo" required>
+                </div>
+
+
+                <div class="form-group">
+                    <label hidden="ingreso">Fecha De Ingreso:</label>
+                    <input type="text" class="form-control text-center" id="ingreso" value="{{ periodo.ingreso  }}"
+                        hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="anios">Años De Servicio:</label>
+                    <input type="text" class="form-control text-center" id="anios" value="{{ anios_transcurridos }}"
+                        hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="dias">Dias Que Corresponden:</label>
+                    <input type="text" class="form-control text-center" id="dias" value="{{holydays.dias }}" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="dias_a_gozar">Dias a Gozar:</label>
+                    <input type="text" class="form-control text-center" id="dias_a_gozar" value="{{ hola.dias_usados }}"
+                        hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="dias_pendientes">Dias Restantes para gozar:</label>
+                    <input type="text" class="form-control text-center" id="dias_pendientes"
+                        value="{{ hola.dias_restantes }}" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="inicio">Periodo a Gozar del:</label>
+                    <input type="text" class="form-control text-center" id="inicio" value="{{ holas.inicio }} " hidden>
+                </div>
+                <!-- En tu template de Django -->
+
+                <div class="form-group">
+                    <label hidden="final">Al:</label>
+                    <input type="text" class="form-control text-center" id="final" value="{{ ultima_solicitud.final }}"
+                        hidden>
+                </div>
+
+                <div class="form-group">
+                    <label hidden="renaudar">FECHA QUE DEBERÁ REANUDAR SUS ACTIVIDADES:</label>
+                    <input type="text" class="form-control text-center" id="renaudar" value="{{ nueva_fecha }}" hidden>
+                </div>
+
+                <button type="button" class="btn btn-success" id="generarPDF">Generar documento PDF</button>
+            </form>
+        </div>
+
+    </center>
+
+    <br>
+    <br>
+</body>
+
+</html>
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+
+<!-- Modal foto de perfil -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="{% static 'vacaciones.js' %}"></script>
+
+
+{% endblock javascripts %}

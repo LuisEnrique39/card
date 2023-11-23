@@ -1,0 +1,172 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Organigrama {% endblock title %}
+
+{% block content %}
+{% load static %}
+<!-- Incluir archivos CSS y JS de la biblioteca DatePicker -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.9.0/datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.9.0/datepicker.min.js"></script>
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Solicitud de vacaciones </h3>
+                </div>
+            </div>
+        </div>
+        <center>
+
+            <div class="container">
+
+                <div class="text-center">
+                    <div class="mb-4">
+                        <h5>Departamento</h5>
+                        <p style="color: red;">{{ user.information.departamento }}</p>
+                    </div>
+                </div>
+
+                <div class="follow mb-4">
+                    <div>
+                        <h5>Dias de vacaciones</h5>
+                        <p style="color: red;">{{ holydays.dias }} días de vacaciones</p>
+                    </div>
+                </div>
+
+                <div class="follow mb-4">
+                    <div>
+                        <h5>Años transcurridos</h5>
+                        <p style="color: red;">{{ anios_transcurridos }} Año transcurrido</p>
+                    </div>
+                </div>
+
+                <div class="follow mb-4">
+                    <div>
+                        <h5>Ultimo día de vacaciones</h5>
+                        <p style="color: red;">{{ ultima_solicitud.final }} último día de vacaciones</p>
+                    </div>
+                </div>
+
+                <div class="follow mb-4">
+                    <div>
+                        <h5>Regreso de vacaciones</h5>
+                        <p style="color: red;">{{ nueva_fecha }} regreso de vacaciones</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </center>
+
+        <center>
+            <form id="vacation-form">
+                {% csrf_token %}
+                <label class="etiquetaForm">SELECCIONA EL INICIO DE VACACIONES</label>
+                <input class="form-control text-center" type="date" name="inicio" id="inicioField"
+                    placeholder="Ingresa la fecha de inicio" required>
+
+                <label class="etiquetaForm">SELECCIONA EL FINAL DE VACACIONES</label>
+                <input class="form-control text-center" type="date" name="final" id="finalField"
+                    placeholder="Ingresa la fecha de final" required>
+
+            </form>
+        </center>
+        <br>
+        <center>
+            <div class="btnact">
+                <button name="boton" onclick="enviarPeriodo()" type="button" class="btn btn-success">Asignar Periodo De
+                    Vacaciones</button>
+            </div>
+        </center>
+    </div>
+</div>
+</div>
+
+{% include "includes/footer.html" %}
+<style>
+    #hatput {
+        width: 90%;
+        font-size: 15px;
+        text-align: center;
+        border-radius: 15px;
+        margin-left: 35px;
+    }
+
+    #idput-1 {
+        text-align: center;
+        font-size: 15px;
+    }
+</style>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<!-- Modal foto de perfil -->
+<script>
+    // Inicializar el DatePicker para el campo de entrada con el ID 'inicioField'
+    const inicioDatePicker = new Datepicker(document.getElementById('inicioField'), {
+        // Opciones adicionales si es necesario
+    });
+    function enviarPeriodo() {
+        var inicio = document.getElementById('inicioField').value;
+        var final = document.getElementById('finalField').value;
+
+        if (!inicio || !final) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Selecciona las dos fechas'
+            });
+        } else {
+            $.ajax({
+                url: "{% url 'asignar_vacaciones' user_id %}",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    inicio: inicio,
+                    final: final,
+                },
+                success: function (data) {
+                    console.log(data);
+                    console.log("Success");
+
+                    if (data.success && data.message === 'descarga el pdf.') {
+                        // La solicitud fue exitosa y los días restantes son mayores a 0
+                        window.location.href = "{% url 'profileg' username=user.username %}";
+                    } else {
+                        // Puedes mostrar un mensaje de error o realizar otra acción
+                        console.log("Error en la solicitud de vacaciones");
+                        mostrarErrorSwal();
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Manejo de errores para el caso de fallo en la solicitud
+                    console.log("Error en la solicitud de vacaciones");
+                    mostrarErrorSwal();
+                }
+            });
+        }
+    }
+
+    function mostrarErrorSwal() {
+        Swal.fire({
+            icon: 'error',
+            title: 'No tienes suficientes dias disponibless'
+        });
+    }
+
+    // Configura el Datepicker para habilitar solo días laborables (lunes a viernes) para ambos campos
+    $(function () {
+        $(".controllers").datepicker({
+            beforeShowDay: function (date) {
+                var day = date.getDay();
+                // Habilita solo los días de la semana (0 = domingo, 6 = sábado)
+                return [day !== 0 && day !== 6, ''];
+            }
+        });
+    });
+</script>
+
+{% endblock javascripts %}

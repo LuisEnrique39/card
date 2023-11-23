@@ -1,0 +1,54 @@
+/* boton de puestos */
+.descripcion {
+  max-height: 100px; /* Altura máxima */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+  white-space: pre-line; /* Permite que el texto se ajuste en múltiples líneas */
+}
+#mostrar-formulario {
+  font-size: 2em;
+  width: 70px; /* Ajusta el ancho del botón según tus preferencias */
+  height: 70px; /* Ajusta la altura del botón según tus preferencias */
+  border-radius: 0.25rem; /* Ajusta el radio de los bordes si deseas esquinas redondeadas */
+}
+
+/* texto justifiado en modal de puesto */
+.modal-body {
+    text-align: justify;
+  }
+
+
+  .send{
+    padding: 7px;
+    background-color: black;
+    border-color: transparent;
+    color: white;
+    border-radius: 5px;
+    width: 80%;
+    height: 45px;
+    margin-top: 20%;
+  }
+
+  .send:hover{
+    background-color: #007bff;
+    width: 82%;
+    height: 50px;
+    
+  }
+
+  .img-grande {
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 80vh !important; /* Ajusta la altura máxima según tus preferencias */
+  }
+
+
+  .dropdown-menu {
+    width: 400px;
+  }
+
+  @media (max-width: 768px) {
+    .custom-dropdown-menu {
+      width: 100%;
+      /* Ancho del menú al 100% en pantallas más pequeñas */
+  }
+  }

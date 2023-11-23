@@ -1,0 +1,408 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+<div class="header pb-6 d-flex align-items-center"
+  style="min-height: 500px; background-image: url(/static/assets/img/theme/work.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-2 text-white">
+          Hola {{ user.username }}
+        </h1>
+        <div class="profile1">
+          <a class="btnInf" href="{% url 'information' user.id %}">Actualiza tu informacion</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container-fluid d-flex align-items-center">
+      <div class="col-lg-12 col-md-10">
+        <div class="codQR"> <!-- {{ user.information.first_name }} {{ user.information.last_name }} -->
+          <a href="{% url 'generar_codigo_qr' user.id %}"
+            download="{{ user.information.first_name }}_{{ user.information.last_name }}_qr.png">
+            <img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .profile1 a {
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    background-color: rgb(0, 31, 66);
+    margin-left: 20px;
+    color: white;
+    /*IMPORTANTE*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .codQR {
+    width: 100%;
+    height: 270px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .QR-code {
+    width: 250px;
+    height: 250px;
+  }
+</style>
+
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-4 order-xl-2">
+      <div class="card card-profile">
+        <img src="{% static 'assets/img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+              {% if user_info.foto_de_perfil %}
+              <a href="#" id="openPhotoModal">
+                <img src="{% static user_info.foto_de_perfil.url %}" alt="Foto de perfil" class="img-fluid"
+                  style="width: auto; border-radius: 10px; height: auto; border-color: transparent;">
+                <!-- Modal foto de perfil -->
+                <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Foto de Perfil</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <!-- Aquí se mostrará la foto de perfil -->
+                        <img src="{% static user_info.foto_de_perfil.url %}" alt="Foto de perfil" id="modalImage"
+                          class="img-fluid img-grande">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!--TERMINA  Modal foto de perfil -->
+
+                {% else %}
+                <img src="{% static 'assets/img/Tesca.png' %}" alt="Imagen por defecto" class="img-fluid"
+                  style="border-color: transparent;">
+                {% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+        </div>
+
+
+        <div class="card-body pt-0">
+          <div class="row">
+            <div class="col">
+              <div class="card-profile-stats d-flex justify-content-center">
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <h5 class="h3">
+              Hats asignados
+            </h5>
+
+            <div class="h5 mt-4">
+              {% for registros in registros %}
+              <div style="font-size: 15px;">
+                {{registros.hat.nombre_hat}}
+              </div>
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Edita tu información de perfil. </h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          {% csrf_token %}
+          <div class="profile1">
+            {% if cantidad_registros < 4 %} <a class="btnInf btnfuncional" href="{% url 'asignarhat' user.id %}"
+              style="text-align: center;">Asigna tu hat</a>
+              {% else %}
+              <a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de hats</a>
+              {% endif %}
+          </div>
+
+          <div class="profile1">
+            {% if periodo.ingreso and periodo.egreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}"
+              style="text-align: center;">Actualizar periodo</a>
+
+            {% elif periodo.ingreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id%}" style="text-align: center;">Asignar
+              egreso</a>
+            {% else %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Agregar
+              ingreso</a>
+            {% endif %}
+          </div>
+          <h2>aqui inicia el tema de vacaciones luis</h2>
+          <div class="profile1">
+            <a class="btnInf btnfuncional" href="{% url 'asignar_vacaciones' user_id=user.id %}"
+              style="text-align: center;">Pedir
+              vacaciones</a>
+          </div>
+          <div class="profile1">
+            <a class="btnInf btnfuncional" href="{% url 'asignar_vacacionespdf' user_id=user.id %}"
+              style="text-align: center;"> Generar documento</a>
+          </div>
+          <div class="profile1">
+            <a class="btnInf btnfuncional" href="{% url 'CONTRATO_INDIVIDUALpdf' user_id=user.id %}"
+              style="text-align: center;"> CONTRATO INDIVIDUAL DE TRABAJO POR TIEMPO DETERMINADO</a>
+          </div>
+
+          <hr class="my-4" />
+          <h6 class="heading-small text-muted mb-4">Información de usuario</h6>
+
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-last-name">Nombre completo</label>
+                  <h6 class="heading-small text-muted mb-4">
+                    {{ user.information.first_name }}
+                    {{user.information.last_name }}</h6>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-last-name">Correo</label>
+                  <h6 class="heading-small text-muted mb-4">{{ user.email }}</h6>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-last-name">Dirección</label>
+                  <h6 class="heading-small text-muted mb-4">{{ user.information.direccion }}</h6>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-username">Fecha de nacimiento</label>
+                  <h6 class="heading-small text-muted mb-4">{{ user.information.nacimiento }}</h6>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-email">Teléfono Personal</label>
+                  <h6 class="heading-small text-muted mb-4">{{ user.information.telefono }}</h6>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-numero">Teléfono de Casa</label>
+                  <h6 class="heading-small text-muted mb-4">{{ user.information.telefono_casa }}</h6>
+                </div>
+              </div>
+
+              <hr class="my-4" />
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-numero">Fecha de ingreso</label>
+                  <h6 class="heading-small text-muted mb-4">{{ periodo.ingreso }}</h6>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-numero">Fecha de egreso</label>
+                  <h6 class="heading-small text-muted mb-4">{{ periodo.egreso}}</h6>
+                </div>
+              </div>
+
+              <div class="col-lg-12 text-center">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-numero">Tiempo transcurrido</label>
+                  {% if periodo.ingreso %}
+                  {% if not periodo.egreso %}
+                  <!-- Mostrar tiempo actual si hay ingreso y no hay egreso -->
+                  <p style="color: green;">
+                    {% if tiempo_formateado.dias %}
+                    {{ tiempo_formateado.dias }} día{{ tiempo_formateado.dias|pluralize:"s" }},
+                    {% endif %}
+                    {{ tiempo_formateado.horas }} hora{{ tiempo_formateado.horas|pluralize:"s" }},
+                    {{ tiempo_formateado.minutos }} minuto{{ tiempo_formateado.minutos|pluralize:"s" }},
+                    {{ tiempo_formateado.segundos }} segundo{{ tiempo_formateado.segundos|pluralize:"s" }}
+                  </p>
+                  <p style="color: green;">
+                    {{ anios_transcurridos }} Años transcurridos
+                  </p>
+                  {% endif %}
+                  {% else %}
+                  <p>No hay ingreso y no se calcula.</p>
+                  {% endif %}
+
+                  <!-- Diferencia con egreso -->
+                  {% if periodo.egreso %}
+                  <p>
+                    {% if anios_transcurridos or meses_transcurridos or dias_transcurridos %}
+                    {% if anios_transcurridos %}
+                    {{ anios_transcurridos }} año{{ anios_transcurridos|pluralize:"s" }}
+                    {% endif %}
+                    {% if meses_transcurridos %}
+                    {{ meses_transcurridos }} mes{{ meses_transcurridos|pluralize:"es" }}
+                    {% if anios_transcurridos or dias_transcurridos %} {% endif %}
+                    {% endif %}
+                    {% if dias_transcurridos %}
+                    {% if anios_transcurridos or meses_transcurridos %} y {% endif %}
+                    {{ dias_transcurridos }} día{{ dias_transcurridos|pluralize:"s" }}
+                    {% endif %}
+                    transcurrido(s)
+                    {% else %}
+                  <p>No se puede calcular.</p>
+                  {% endif %}
+                  </p>
+                  {% endif %}
+                </div>
+                <hr class="my-4" />
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-numero">Contacto de emergencia</label>
+                    <h6 class="heading-small text-muted mb-4">{{ user.information.contacto_emergencia }}</h6>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-numero">Teléfono de emergencia</label>
+                    <h6 class="heading-small text-muted mb-4">{{ user.information.telefono_emergencia }}</h6>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>aqui va el tema de las vacaciones kevin</h3>
+    </div>
+    {% include "includes/footer.html" %}
+
+  </div>
+
+  {% endblock content %}
+
+  <!-- Cambiar fonto de perfil formulario -->
+  {% block javascripts %}
+  <script>
+    // Espera a que el documento esté listo
+    $(document).ready(function () {
+      // Maneja el clic en el botón "Cambiar" para abrir el modal
+      $("#abrirModal").click(function (e) {
+        e.preventDefault();
+        $("#cambiarFotoModal").modal("show");
+      });
+
+      // Maneja el cierre del modal para restablecer el formulario
+      $("#cambiarFotoModal").on("hidden.bs.modal", function () {
+        $("#cambiarFotoForm")[0].reset();
+      });
+    });
+  </script>
+
+
+
+  <script>
+    // Borrar foto de perfil
+    $(document).ready(function () {
+      $("#eliminarFoto").on("click", function (e) {
+        e.preventDefault();
+
+        // Muestra un cuadro de diálogo de confirmación con SweetAlert
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "¿Quieres eliminar la foto de perfil?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // El usuario confirmó, realiza la eliminación
+            $.ajax({
+              type: "POST",
+              url: "{% url 'eliminar_foto' %}",  // Reemplaza 'eliminar_foto' con la URL de tu vista para eliminar la foto
+              data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+              },
+              success: function (data) {
+                // La foto se eliminó con éxito, muestra una notificación con SweetAlert
+                Swal.fire({
+                  title: '¡Eliminada!',
+                  text: 'La foto de perfil se eliminó con éxito.',
+                  icon: 'success',
+                  timer: 2000,  // Puedes ajustar la duración de la notificación
+                  showConfirmButton: false
+                }).then(function () {
+                  // Actualiza la página o realiza otras acciones necesarias
+                  location.reload();
+                });
+              },
+              error: function (xhr, textStatus, errorThrown) {
+                // Ocurrió un error, muestra una notificación de error con SweetAlert
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Ocurrió un error al eliminar la foto de perfil.',
+                  icon: 'error'
+                });
+                console.log(xhr.responseText);
+              }
+            });
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- Modal foto de perfil -->
+  <Script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const openPhotoModal = document.getElementById("openPhotoModal");
+
+      openPhotoModal.addEventListener("click", function (e) {
+        e.preventDefault();
+        $("#photoModal").modal("show");
+      });
+    });
+
+  </Script>
+
+  {% endblock javascripts %}

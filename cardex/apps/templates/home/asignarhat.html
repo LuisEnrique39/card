@@ -1,0 +1,85 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="card-body">
+    <form method="post">
+        {% csrf_token %}
+        <h6 class="heading-small text-muted mb-4">Información de usuario</h6>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" value="{{ user.id }}" id="user_id">
+                    <input type="text" value="{{ user.username }}" id="user_name">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="departamentoField">{{_('Selecciona tu hat')}}</label>
+                    </div>
+                    <select class="custom-select" id="hatput">
+                        <option value="" disabled selected>{{_('Selecciona una opcion')}}</option>
+                        {% for hat in hat %}
+                        <option value="{{ hat.id }}">{{hat.nombre_hat}}</option>
+                        {% endfor %}
+                    </select>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="hatreg()">Guardar</button>
+    </form>
+</div>
+</div>
+</div>
+</div>
+<style>
+
+</style>
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+
+<!-- Modal foto de perfil -->
+<Script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openPhotoModal = document.getElementById("openPhotoModal");
+
+        openPhotoModal.addEventListener("click", function (e) {
+            e.preventDefault();
+            $("#photoModal").modal("show");
+        });
+    });
+
+</Script>
+
+
+<script>
+    function hatreg() {
+        $.ajax({
+            url: "{% url 'asignarhat' user.id %}",
+            type: "POST",
+            data: {
+                'user_id': $('#user_id').val(),
+                'hat_id': $('#hatput').val(),
+                'username': $('#user_name').val(),
+                
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (data) {
+                console.log(data)
+                console.log("Success");
+                location.reload();
+            }
+        });
+    }
+</script>
+{% endblock javascripts %}

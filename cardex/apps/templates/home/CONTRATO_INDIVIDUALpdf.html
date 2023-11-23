@@ -1,0 +1,188 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="{% static 'jspdf.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+        }
+    </style>
+
+    </style>
+</head>
+
+<body>
+    <center>
+
+        <div class="container">
+            <form class="cons-div" id="form">
+
+                <div class="form-group">
+                    <label for="Nombre">Nombre </label>
+                    <input type="text" class="form-control text-center" id="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="originario">a).- Es originario de </label>
+                    <input type="text" class="form-control text-center" id="originario" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nacio">b).- Nació el </label>
+                    <input type="text" class="form-control text-center" id="nacio" required>
+                </div>
+                <div class="form-group">
+                    <label for="nacionalidad"> c).- De nacionalidad </label>
+                    <input type="text" class="form-control text-center" id="nacionalidad" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="civil">d).- Estado civil </label>
+                    <input type="text" class="form-control text-center" id="civil" required>
+                </div>
+                <div class="form-group">
+                    <label for="Sexo"> e).- Sexo</label>
+                    <input type="text" class="form-control text-center" id="Sexo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="domicilio"> f).- Con domicilio en </label>
+                    <input type="text" class="form-control text-center" id="domicilio" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CURP">g).- CURP </label>
+                    <input type="text" class="form-control text-center" id="CURP" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="RFC"> h).- R.F.C</label>
+                    <input type="text" class="form-control text-center" id="RFC" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Declara">II.- Declara </label>
+                    <input type="text" class="form-control text-center" id="Declara" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Sociedad"> a).- Es una Sociedad Mercantil.</label>
+                    <input type="text" class="form-control text-center" id="Sociedad" required>
+                </div>
+                <div class="form-group">
+                    <label for="domicilios">b).- Que tiene su domicilio en </label>
+                    <input type="text" class="form-control text-center" id="domicilios" required>
+                </div>
+                <div class="form-group">
+                    <label for="actividades">c).- Que entre sus actividades están </label>
+                    <input type="text" class="form-control text-center" id="actividades" required>
+                </div>
+                <div class="form-group">
+                    <label for="RFCS">d).- R.F.C.- </label>
+                    <input type="text" class="form-control text-center" id="RFCS" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="partes"> para las partes el día </label>
+                    <input type="text" class="form-control text-center" id="partes" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventual">ya que se trata de un trabajo eventual relativo a </label>
+                    <input type="text" class="form-control text-center" id="eventual" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="precisamente"> precisamente será el de </label>
+                    <input type="text" class="form-control text-center" id="precisamente" required>
+                </div>
+                <div class="form-group">
+                    <label for="consistirán">consistirán en </label>
+                    <input type="text" class="form-control text-center" id="consistirán" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensual">pagarle a éste la cantidad mensual de </label>
+                    <input type="text" class="form-control text-center" id="mensual" required>
+                </div>
+                <div class="form-group">
+                    <label for="primer">Nombre Completo </label>
+                    <input type="text" class="form-control text-center" id="primer" required>
+                </div>
+                <div class="form-group">
+                    <label for="primer">Parentesco o relación </label>
+                    <input type="text" class="form-control text-center" id="primerr" required>
+                </div>
+                <div class="form-group">
+                    <label for="segundo"> Nombre Completo</label>
+                    <input type="text" class="form-control text-center" id="segundo" required>
+                </div>
+                <div class="form-group">
+                    <label for="segundos">Parentesco o relación</label>
+                    <input type="text" class="form-control text-center" id="segundos" required>
+                </div>
+                <div class="form-group">
+                    <label for="tercers"> Nombre Completo</label>
+                    <input type="text" class="form-control text-center" id="tercers" required>
+                </div>
+                <div class="form-group">
+                    <label for="terceros">Parentesco o relación</label>
+                    <input type="text" class="form-control text-center" id="terceros" required>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label for="terminos">terminos este dia </label>
+                    <input type="text" class="form-control text-center" id="terminos" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="de"> de </label>
+                    <input type="text" class="form-control text-center" id="de" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="del"> de </label>
+                    <input type="text" class="form-control text-center" id="del" required>
+                </div> -->
+                <button type="button" class="btn btn-success" id="generarPDF">Generar documento PDF</button>
+            </form>
+        </div>
+
+    </center>
+
+    <br>
+    <br>
+</body>
+
+</html>
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+<script>
+    // Function for generating the PDF
+
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'Contratodeterminado.js' %}"></script>
+
+{% endblock javascripts %}

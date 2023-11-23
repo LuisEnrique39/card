@@ -1,0 +1,134 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} psicologico {{user.username}} {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-xl-12 order-xl-1">
+  <div class="card">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-12">
+          <h3 class="mb-0 text-center">
+            <h3 class="mb-0 text-center"><a href="{% url 'psicologico' %}" class="btn btn-success" style="margin: 1%; border-radius: 12px; color: white; background-color: purple; border-color: purple;"><i class="fa fa-arrow-circle-left"></i>&nbsp; volver </a>  
+           </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body  col d-flex align-items-center justify-content-center text-center">
+
+
+      <div class="card align-items-center justify-content-center text-center" style="width: 18rem;">
+        <img src="{% static 'batman.png' %}" class="card-img-top" alt="..." style="width: 120px; height: 120px;">
+        <div class="card-body">
+          <h2 class="card-title">{{ user.information.first_name }} {{user.information.last_name }}</h2>
+          <h5 class="card-text">{{ user.information.departamento }}</h5>
+          <h4>Perfil psicologico</h4>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg" style="background-color: purple; border-color: purple;">
+              Ver perfil
+          </button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalkaisen"
+            style="margin-top: 2%; background-color: purple; border-color: purple;">
+            Subir perfil psicologico
+          </button>
+        </div>
+      </div>
+      <!-- Button trigger modal -->
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="Modalkaisen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Subir perfil psicologico</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{% url 'uploadpsico' user.username %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="modal-body">
+                <input type="hidden" class="form-control" name="idField" value="{{user.id}}" required>
+                <input type="text" name="fileTitle" class="form-control" placeholder="Ingresa un titulo"
+                  style="margin-bottom: 2%;" required>
+                <input type="file" name="uploadedFile" class="form-control" required>
+
+
+              </div>
+              <div class="modal-footer align-items-center justify-content-center">
+                <button type="submit" class="btn btn-primary" value="Subir">Subir</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- modal perfil psicologico -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header align-items-center justify-content-center text-center">
+          <h5 class="modal-title" id="exampleModalLabel">Justificantes medicos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+
+      <div class="modal-body align-items-center justify-content-center text-center">
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th scope="col">Titulo</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Documento</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for a in perfiles %}
+                  <tr>
+                      <th scope="row">{{ a.title }}</th>
+                      <td>{{ a.dateTimeOfUpload }}</td>
+                      <td>
+                          <button class="btn btn-success" type="button" data-toggle="collapse"
+                              data-target="#collapseDoc{{a.id}}" aria-expanded="false"
+                              aria-controls="collapseDoc{{a.id}}">
+                              Ver
+                          </button>
+                          <div class="collapse" id="collapseDoc{{a.id}}">
+                              <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="200px"
+                                  height="200px" id="documentPDF{{a.id}}">
+                          </div>
+                      </td>
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+          </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include "includes/footer.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  function direccionkaisen() {
+    let id_us = $("#idField").val();
+    console.log("EL ID ES: " + id_us)
+    /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
+    window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/kaisen/" + "?user_id__id__exact=" + id_us
+  }
+</script>
+{% endblock javascripts %}
