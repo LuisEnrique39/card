@@ -21,6 +21,10 @@
             margin: auto;
             margin-top: 50px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 
     </style>
@@ -74,10 +78,6 @@
                     <input type="text" class="form-control text-center" id="RFC" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="Declara">II.- Declara </label>
-                    <input type="text" class="form-control text-center" id="Declara" required>
-                </div>
 
                 <div class="form-group">
                     <label for="Sociedad"> a).- Es una Sociedad Mercantil.</label>
@@ -97,25 +97,30 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="partes"> para las partes el día </label>
+                    <label for="partes"> Fecha</label>
                     <input type="text" class="form-control text-center" id="partes" required>
                 </div>
                 <div class="form-group">
-                    <label for="eventual">ya que se trata de un trabajo eventual relativo a </label>
+                    <label for="eventual">relativo </label>
                     <input type="text" class="form-control text-center" id="eventual" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="precisamente"> precisamente será el de </label>
+                    <label for="precisamente"> Departamento </label>
                     <input type="text" class="form-control text-center" id="precisamente" required>
                 </div>
                 <div class="form-group">
-                    <label for="consistirán">consistirán en </label>
+                    <label for="consistirán">Hat </label>
                     <input type="text" class="form-control text-center" id="consistirán" required>
                 </div>
                 <div class="form-group">
                     <label for="mensual">pagarle a éste la cantidad mensual de </label>
                     <input type="text" class="form-control text-center" id="mensual" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Declara">Fecha de ingreso</label>
+                    <input type="text" class="form-control text-center" id="Declara" required>
                 </div>
                 <div class="form-group">
                     <label for="primer">Nombre Completo </label>
@@ -125,37 +130,28 @@
                     <label for="primer">Parentesco o relación </label>
                     <input type="text" class="form-control text-center" id="primerr" required>
                 </div>
-                <div class="form-group">
-                    <label for="segundo"> Nombre Completo</label>
-                    <input type="text" class="form-control text-center" id="segundo" required>
+                <div class="form-group hidden" id="segundo">
+                    <label for="segundoss"> Nombre Completo</label>
+                    <input type="text" class="form-control text-center" id="segundoss" required>
                 </div>
-                <div class="form-group">
-                    <label for="segundos">Parentesco o relación</label>
-                    <input type="text" class="form-control text-center" id="segundos" required>
+                <div class="form-group hidden" id="segundos">
+                    <label for="segundosss">Parentesco o relación</label>
+                    <input type="text" class="form-control text-center" id="segundosss" required>
                 </div>
-                <div class="form-group">
-                    <label for="tercers"> Nombre Completo</label>
-                    <input type="text" class="form-control text-center" id="tercers" required>
+                <div class="form-group hidden" id="tercers">
+                    <label for="tercerss"> Nombre Completo</label>
+                    <input type="text" class="form-control text-center" id="tercerss" required>
                 </div>
-                <div class="form-group">
-                    <label for="terceros">Parentesco o relación</label>
-                    <input type="text" class="form-control text-center" id="terceros" required>
-                </div>
-
-                <!-- <div class="form-group">
-                    <label for="terminos">terminos este dia </label>
-                    <input type="text" class="form-control text-center" id="terminos" required>
+                <div class="form-group hidden" id="terceros">
+                    <label for="terceross">Parentesco o relación</label>
+                    <input type="text" class="form-control text-center" id="terceross" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="de"> de </label>
-                    <input type="text" class="form-control text-center" id="de" required>
-                </div>
+                <button type="button" id="mostrarElementosBtn" onclick="mostrarElementos()">Mostrar Segundo y
+                    Tercero</button>
 
-                <div class="form-group">
-                    <label for="del"> de </label>
-                    <input type="text" class="form-control text-center" id="del" required>
-                </div> -->
+
+
                 <button type="button" class="btn btn-success" id="generarPDF">Generar documento PDF</button>
             </form>
         </div>
@@ -176,7 +172,35 @@
 <!-- Cambiar foto de perfil formulario -->
 {% block javascripts %}
 <script>
-    // Function for generating the PDF
+    var clics = 0;  // Variable para contar los clics
+    function mostrarElementos() {
+        var segundo = document.getElementById("segundo");
+        var segundos = document.getElementById("segundos");
+        var tercers = document.getElementById("tercers");
+        var terceros = document.getElementById("terceros");
+        var btnMostrarElementos = document.getElementById("mostrarElementosBtn");
+
+        clics++;
+
+        console.log("Clics:", clics);
+
+        // Asegurarse de que los campos ocultos estén visibles desde el principio
+        segundo.classList.remove("hidden");
+        segundos.classList.remove("hidden");
+        tercers.classList.remove("hidden");
+        terceros.classList.remove("hidden");
+
+        if (clics % 3 === 1) {
+            tercers.classList.add("hidden");
+            terceros.classList.add("hidden");
+        } else if (clics % 3 === 2) {
+            segundo.classList.add("hidden");
+            segundos.classList.add("hidden");
+        } else {
+            // Oculta el botón después de mostrar todos los elementos
+            btnMostrarElementos.classList.add("hidden");
+        }
+    }
 
 </script>
 

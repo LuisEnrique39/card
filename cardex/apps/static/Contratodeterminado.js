@@ -21,13 +21,11 @@ $('#generarPDF').click(function () {
     var mensual = $('#mensual').val();
     var primer = $('#primer').val();
     var primerr = $('#primerr').val();
-    var segundo = $('#segundo').val();
-    var segundos = $('#segundos').val();
-    var tercers = $('#tercers').val();
-    var terceros = $('#terceros').val();
-    var terminos = $('#terminos').val();
-    var de = $('#de').val();
-    var del = $('#del').val();
+    var segundoss = $('#segundoss').val();
+    var segundosss = $('#segundosss').val();
+    var tercerss = $('#tercerss').val();
+    var terceross = $('#terceross').val();
+
 
     // Crear un nuevo documento PDF
     var pdf = new jsPDF();
@@ -54,7 +52,7 @@ $('#generarPDF').click(function () {
         pdf.text(': ' + domicilio, 59, 95.4);
         pdf.text(': ' + CURP, 42, 99.4);
         pdf.text(': ' + RFC, 42, 103.4);
-        pdf.text(Declara, 46, 112.2);
+        pdf.text(Nombre, 46, 112.2);
         pdf.text(': ' + Sociedad, 75, 120.4);
         pdf.text(': ' + domicilios, 73, 124.4);
         pdf.text(': ' + actividades, 82, 128.8);
@@ -80,7 +78,7 @@ $('#generarPDF').click(function () {
 
             // Página 3
             var image3 = new Image();
-            image3.src = "../../static/documentos/tres.jpg";
+            image3.src = "../../static/documentos/tress.jpg";
             image3.onload = function () {
                 pdf.addPage(); // Agregar una nueva página
                 pdf.addImage(image3, 'JPG', 0, 0, 200, 300);
@@ -88,14 +86,15 @@ $('#generarPDF').click(function () {
 
                 pdf.text(primer, 33, 167);
                 pdf.text(primerr, 107, 167);
-                pdf.text(segundo, 33, 171);
-                pdf.text(segundos, 107, 171);
+                pdf.text(segundoss, 33, 171);
+                pdf.text(segundosss, 107, 171);
 
-                pdf.text(tercers, 33, 175);
-                pdf.text(terceros, 107, 175);
-                pdf.text('23', 63, 234);
-                pdf.text('noviembre', 100, 234);
-                pdf.text('2023', 130, 234);
+                pdf.text(tercerss, 33, 175);
+                pdf.text(terceross, 107, 175);
+                pdf.text(Declara, 58, 141.4);
+
+                pdf.text(Nombre, 117, 264);
+
 
 
 
