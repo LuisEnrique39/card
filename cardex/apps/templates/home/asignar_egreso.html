@@ -1,0 +1,129 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="card-body">
+    <div id="user-id" data-user-id="{{ id_user }}"></div>
+
+    {% if periodo_existente %}
+    <!-- Si ya existe el ingreso, mostrar la parte de egreso -->
+    <h2>Agregar Egreso</h2>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'asignaregreso' user_id=id_user %}">
+        {% csrf_token %}
+
+        <fieldset>
+            <legend>Información sobre periodo</legend>
+            <br>
+
+            <p>
+                <label class="etiquetaForm">Egreso* </label>
+                <input class="controllers" type="date" name="egreso" id="egresoField"
+                    placeholder="Ingresa la fecha de salida" onkeypress="return ch(event)" required>
+            </p>
+        </fieldset>
+
+        <div class="btnact">
+            <button name="boton" onclick="enviarPeriodo()" type="submit" class="actualizar" style="margin-top: 20px;">
+                {{_('Asignar Egreso') }}</button>
+        </div>
+    </form>
+    {% else %}
+    <!-- Si no existe un periodo, mostrar la parte de ingreso -->
+    <h2>Agregar Ingreso</h2>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'asignaregreso' user_id=id_user %}">
+        {% csrf_token %}
+
+        <fieldset>
+            <legend>Información sobre periodo</legend>
+            <br>
+
+            <p>
+                <label class="etiquetaForm">Ingreso* </label>
+                <input class="controllers" type="date" name="ingreso" id="ingresoField"
+                    placeholder="Ingresa tú fecha de inicio" onkeypress="return ch(event)" required>
+            </p>
+        </fieldset>
+
+        <div class="btnact">
+            <button name="boton" onclick="enviarPeriodo()" type="submit" class="actualizar" style="margin-top: 20px;">
+                {{_('Asignar Ingreso') }}</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <input class="controllers" type="text" name="id" id="idField" disabled=disabled value="{{ id_user }}">
+</div>
+</div>
+</div>
+</div>
+<style>
+
+</style>
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+
+
+
+<script>
+    function enviarPeriodo() {
+
+        var datos = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            ingreso: $('#ingresoField').val(),
+            egreso: $('#egresoField').val(),
+            id: $('#idField').val()
+        };
+
+        // Verificar si el valor de ingreso no está indefinido antes de enviar
+        if (datos.ingreso !== undefined) {
+            $.ajax({
+                url: "{% url 'asignaregreso'  id_user %}",
+                type: "POST",
+                data: datos,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data);
+                    console.log("Success");
+
+                    // Redirige a la página de perfil después de la actualización del periodo
+                    window.location.href = "{% url 'profileg' username=id_user %}";
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        } else {
+            console.log("El valor de ingreso es indefinido");
+            // Puedes mostrar un mensaje de error o realizar alguna acción adicional si es necesario
+        }
+    }
+</script>
+
+<style>
+    #hatput {
+        width: 90%;
+        font-size: 15px;
+        text-align: center;
+        border-radius: 15px;
+        margin-left: 35px;
+    }
+
+    #idput-1 {
+        text-align: center;
+        font-size: 15px;
+    }
+</style>
+{% endblock javascripts %}

@@ -1,0 +1,320 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Asistencias {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Registro de asistencias </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            {% if user.is_authenticated and not user.is_superuser %}
+
+            <div class="alert alert-primary text-center" role="alert">
+                ¡Marca tu entrada!
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <!-- Contenido de tu div -->
+                        <input type="text" id="hora1" disabled style="text-align: center; display: none;">
+
+                        <form method="post" class="entradas">
+                            {% csrf_token %}
+
+                            {{ form }}
+                            <button type="submit" class="post" id="">Registrar</button>
+
+                        </form>
+
+                        <br><br><br>
+                        <hr width=50% size=10 noshade="noshade">
+                    </div>
+                </div>
+            </div>
+            {% elif user.is_authenticated and user.is_superuser %}
+
+            <form method="get" action="{% url 'asistencia' %}">
+                <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+                    <input type="text" name="search" value="{{ request.GET.search }}" class="search-input"
+                        placeholder="Buscar...">
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    {% if request.GET.search %}
+                    <a href="{% url 'asistencia' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+                    {% endif %}
+                </div>
+            </form>
+            <div class="d-flex align-items-center justify-content-center text-center">
+                <div class="scroll_horizontal">
+                    <table id="myTable" class="table text-center">
+                        <thead>
+                            <tr class="header">
+                                <th style="width:20%; text-align: center;">Foto</th>
+                                <th style="width:20%; text-align: center;">Departamento</th>
+                                <th style="width:20%; text-align: center;">Usuario</th>
+                                <th style="width:20%; text-align: center;">Descripcion</th>
+                                <th style="width:50%; text-align: center;">Hora </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts%}
+                            <tr>
+                                <td style="text-align: center;">
+                                    <div class="container-article"><img src="{{ post.user.profile.image.url }}"></div>
+                                </td>
+                                <td style="text-align: center;">{{ post.user.information.departamento }}</td>
+                                <td style="text-align: center;">{{ post.user.username }}</td>
+                                <td style="text-align: center;">{{ post.content }}</td>
+                                <td style="text-align: center;"><time style="color: #14344F;"> <strong>Tu {{ post.content }}</strong> del 
+                                    {{ post.Fecha }} fue a las {{ post.entrada }}</time></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pagination">
+
+                <div class="previous">
+                    {% if posts.has_previous %}
+                    <div class="previous-1">
+                        <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+                    </div>
+                    <div class="previous-1">
+                        <a href="?page={{ posts.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+                    </div>
+                    {% endif %}
+                </div>
+            
+                <div class="current">
+                    {% for page_num in page_numbers %}
+                        {% if page_num == posts.number %}
+                            <span class="current-page">{{ page_num }}</span>
+                        {% else %}
+                            <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            
+                <div class="next">
+                    {% if posts.has_next %}
+                    <div class="next-1">
+                        <a href="?page={{ posts.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+                    </div>
+                    <div class="next-1">
+                        <a href="?page={{ posts.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+                    </div>
+                    {% endif %}
+                </div>
+            
+            </div>
+            {% endif %}
+
+
+            <!-- fin asistencias -->
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    window.onload = function () {
+        let date = new Date();
+        var hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        var hora1 = date.getHours();
+        var mes = date.getMonth();
+        var dia = date.getDate();
+        var año = date.getFullYear();
+        var fechac = dia + " de " + meses[mes] + " de " + año;
+
+        var hora2 = date.getMinutes()
+        var hocom = hora
+        $('#hora1').val(hocom);
+        $('#id_entrada').val(hocom);
+        $('#id_Fecha').val(fechac);
+
+
+        var mensaje1 = "A Tiempo"
+        var mensaje2 = "Retardo"
+        var important = document.getElementById('id_status');
+        important.disabled = false;
+
+        if (hora1 < '9') {
+            $('#id_status').val(mensaje1);
+        } else if (hora1 == '9') {
+            if (hora2 <= '15') {
+                $('#id_status').val(mensaje1);
+            } else {
+                $('#id_status').val(mensaje2);
+            }
+        } else if (hora1 >= '17') {
+            $('#id_status').val(mensaje1);
+        } else {
+            $('#id_status').val(mensaje2);
+        }
+
+    };
+</script>
+
+<style>
+    .asistencia-div {
+        padding-top: 10%;
+    }
+
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .page-number:hover {
+        background: #105db0;
+    }
+
+    .btn-action:hover {
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+
+    .search-input {
+        width: 80%;
+        border-style: solid;
+    }
+
+    .clean-input {
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary,
+    .clean-input {
+        margin: 1%;
+    }
+
+
+    .entradas {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .entradas label {
+        display: none;
+    }
+
+    .entradas input {
+        text-align: center;
+
+    }
+
+    #id_status {
+        display: none;
+    }
+
+    #id_entrada,
+    #id_Fecha {
+        display: none;
+    }
+
+    .entradas select {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 3%;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    #myTable tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header,
+    #myTable tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+{% include "includes/footer.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+{% endblock javascripts %}

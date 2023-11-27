@@ -1,0 +1,362 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Informacion personal {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<!-- Page content -->
+<div class="container-fluid mt--12">
+    <div class="row">
+        <div class="col-xl-4 order-xl-2">
+            <div class="card card-profile">
+                <img src="{% static 'assets/img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder"
+                    class="card-img-top">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 order-lg-2">
+                        <div class="card-profile-image">
+                            {% if profile.image %}
+                            <a href="#" id="openPhotoModal">
+                                <img src="{% static profile.image.url %}" alt="Foto de perfil" class="img-fluid"
+                                    style="width: auto; border-radius: 10px; height: auto; border-color: transparent;">
+                                <!-- Modal foto de perfil -->
+                                <div class="modal fade" id="photoModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalLabel">Foto de Perfil</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Cerrar">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <!-- Aquí se mostrará la foto de perfil -->
+                                                <img src="{% static profile.image.url %}" alt="Foto de perfil"
+                                                    id="modalImage" class="img-fluid img-grande">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--TERMINA  Modal foto de perfil -->
+
+                                {% else %}
+                                <img src="{% static 'assets/img/Tesca.png' %}" alt="Imagen por defecto"
+                                    class="img-fluid" style="border-color: transparent;">
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="#" id="abrirModal" class="btn btn-sm btn-info mr-4" data-toggle="modal"
+                            data-target="#cambiarFotoModal">Cambiar</a>
+                        <a href="#" id="eliminarFoto" class="btn btn-sm btn-default float-right">Eliminar</a>
+                    </div>
+                </div>
+
+                <!-- Modal para cambiar la foto de perfil -->
+                <div class="modal fade" id="cambiarFotoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">Cambiar Foto de Perfil</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Formulario para cambiar la foto de perfil -->
+                                <form method="post" enctype="multipart/form-data" id="cambiarFotoForm">
+                                    {% csrf_token %}
+                                    <!-- Otros campos del formulario -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Subir</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" name="foto_de_perfil" class="custom-file-input"
+                                                accept="image/*" id="inputGroupFile01" required>
+                                            <label class="custom-file-label" for="foto_de_perfil">Escoge tu Foto</label>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" form="cambiarFotoForm" class="btn btn-primary">Guardar
+                                    Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Acaba Modal para cambiar la foto de perfil -->
+
+                <div class="card-body pt-0">
+                    <br>
+                    <div class="text-center">
+                        <h5 class="h3">
+                            {{ request.user.username }}
+                        </h5>
+                        <div class="h5 font-weight-300">
+                            {{ request.user.email }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Edita tu información personal. </h3>
+                        </div>
+                        <!--   <div class="col-4 text-right">
+              <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+            </div> -->
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- registro de datos personales -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <h6 class="heading-small text-muted mb-4">Información de usuario</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="idField" value="{{user.id}}" required>
+                                <input type="hidden" class="form-control" id="nameField" value="{{user.username}}">
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="first_namaField">{{_('Nombre')}}</label>
+                                        <input type="text" class="form-control" id="first_nameField" name="first_name"
+                                            placeholder="{{ _('Escribe tu nombre') }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="last_nameField">{{_('Apellido')}}</label>
+                                        <input type="text" class="form-control" id="last_nameField" name="last_name"
+                                            placeholder="{{ _('Escribe tu Apellido') }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="telefonoField">{{_('Telefono')}}</label>
+                                        <input type="text" class="form-control" id="telefonoField" name="telefono"
+                                            placeholder="{{ _('Escribe tu numero de telefono') }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="telefono_casaField">{{_('Telefono de casa')}}</label>
+                                        <input type="text" class="form-control" id="telefono_casaField"
+                                            name="telefono_casa" placeholder="{{ _('Escribe tu numero de casa') }}"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="contacto_emergenciaField">
+                                            {{_('Nombre de contacto de emergencia')}}</label>
+                                        <input type="text" class="form-control" id="contacto_emergenciaField"
+                                            name="contacto_emergencia"
+                                            placeholder="{{ _('Escribe el nombre de tu contacto de emergencia') }}"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="telefono_emergenciaField">{{_('Telefono de emergencia')}}</label>
+                                        <input type="text" class="form-control" id="telefono_emergenciaField"
+                                            name="telefono_emergencia"
+                                            placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}"
+                                            required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="nacimientoField">{{_('Fecha de nacimiento')}}</label>
+                                        <input type="date" class="form-control" id="nacimientoField" name="nacimiento"
+                                            placeholder="{{ _('') }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="direccionField">{{_('Direccion')}}</label>
+                                        <input type="text" class="form-control" id="direccionField" name="direccion"
+                                            placeholder="{{ _('Escribe tu direccion') }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text"
+                                            for="departamentoField">{{_('Departamento')}}</label>
+                                    </div>
+                                    <select class="custom-select" id="departamentoField" name="pais">
+                                        <option value="" disabled selected>{{_('Selecciona tu departamento')}}
+                                        </option>
+                                        <option value="Digimundo">Digimundo</option>
+                                        <option value="Agua">Agua</option>
+                                        <option value="Tierra">Tierra</option>
+                                        <option value="Fuego">Fuego</option>
+                                        <option value="Aire">Aire</option>
+                                        <option value="Ether">Ether</option>
+                                        <option value="Ignis">Ignis</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="puestoField">{{_('Puesto')}}</label>
+                                        <input type="text" class="form-control" id="puestoField" name="puesto"
+                                            placeholder="{{ _('Escribe tu puesto') }}" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="hacer()">Guardar</button>
+                    </form>
+                    <!-- fin registro de datos -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+
+    </style>
+    {% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+<script>
+    // Espera a que el documento esté listo
+    $(document).ready(function () {
+        // Maneja el clic en el botón "Cambiar" para abrir el modal
+        $("#abrirModal").click(function (e) {
+            e.preventDefault();
+            $("#cambiarFotoModal").modal("show");
+        });
+
+        // Maneja el cierre del modal para restablecer el formulario
+        $("#cambiarFotoModal").on("hidden.bs.modal", function () {
+            $("#cambiarFotoForm")[0].reset();
+        });
+    });
+</script>
+
+
+
+<script>
+    // Borrar foto de perfil
+    $(document).ready(function () {
+        $("#eliminarFoto").on("click", function (e) {
+            e.preventDefault();
+
+            // Muestra un cuadro de diálogo de confirmación con SweetAlert
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Quieres eliminar la foto de perfil?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // El usuario confirmó, realiza la eliminación
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'eliminar_foto' %}",  // Reemplaza 'eliminar_foto' con la URL de tu vista para eliminar la foto
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}"
+                        },
+                        success: function (data) {
+                            // La foto se eliminó con éxito, muestra una notificación con SweetAlert
+                            Swal.fire({
+                                title: '¡Eliminada!',
+                                text: 'La foto de perfil se eliminó con éxito.',
+                                icon: 'success',
+                                timer: 2000,  // Puedes ajustar la duración de la notificación
+                                showConfirmButton: false
+                            }).then(function () {
+                                // Actualiza la página o realiza otras acciones necesarias
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Ocurrió un error, muestra una notificación de error con SweetAlert
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Ocurrió un error al eliminar la foto de perfil.',
+                                icon: 'error'
+                            });
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Modal foto de perfil -->
+<Script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openPhotoModal = document.getElementById("openPhotoModal");
+
+        openPhotoModal.addEventListener("click", function (e) {
+            e.preventDefault();
+            $("#photoModal").modal("show");
+        });
+    });
+
+</Script>
+
+<script>
+    function hacer() {
+        $.ajax({
+            url: "{% url 'update' user.id %}",
+            type: "POST",
+            data: {
+                'first_name': $('#first_nameField').val(),
+                'last_name': $('#last_nameField').val(),
+                'telefono': $('#telefonoField').val(),
+                'telefono_casa': $('#telefono_casaField').val(),
+                'nacimiento': $('#nacimientoField').val(),
+                'direccion': $('#direccionField').val(),
+                'puesto': $('#puestoField').val(),
+                'contacto_emergencia': $('#contacto_emergenciaField').val(),
+                'telefono_emergencia': $('#telefono_emergenciaField').val(),
+                'departamento': $('#departamentoField').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+            },
+            success: function (data) {
+                console.log(data)
+                console.log("Success");
+            }
+        });
+
+    }
+</script>
+{% endblock javascripts %}

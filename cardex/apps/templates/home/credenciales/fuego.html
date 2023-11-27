@@ -1,0 +1,490 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Credencial - Fuego {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    .imagen{
+        padding: 15px;
+    }
+
+/*colores principales y tamaños*/
+.credencial, .reverso{
+    border-style: solid;
+    background-color: white;
+    overflow: hidden;
+    display: grid;
+    grid-template:
+    "header" 15px
+    "main" auto
+    "footer" 15px;
+    margin: auto;
+    width: 300px;
+    height: 80vh;
+}
+.foto{
+    width: calc(100% - 35px) ;
+    height: calc(65% - 30px);
+}
+/*asignar areas*/
+.header , .footer{
+    background-color: #ea5052;
+    color: #ea5052;
+}
+.header{
+    position: relative;
+    width: calc(100% - 45px);
+}
+.header .lateral{
+    grid-area: header;
+}
+.footer{
+    grid-area: footer;
+}
+.lateral{
+    background-color: #19202a;
+    color: white;
+}
+/*barras delanteras*/
+.nombre{
+    background-color: #ea5052;
+    color: white;
+}
+.puesto{
+    background-color: #32b6a8;
+    color: white;
+}
+.vacio{
+    background-color: #f3d747;
+    color: #f3d747;
+}
+/*para los colores de atras*/
+.uno{
+    background-color: #f3d747;
+    color: #f3d747;
+}
+.dos{
+    background-color: #32b6a8;
+    color: #32b6a8;
+}
+.tres{
+    background-color: #ea5052;
+    color: #ea5052;
+}
+@media(min-width:300px){
+        /* en frente */
+        .credencial .lateral{
+            position: absolute;
+            transform: translateX(255px);
+            width: 45px;
+            height: 70vh;
+            margin-top: -15px;
+        }
+        .foto{
+        width: calc(100% - 35px) ;
+        height: calc(85% - 30px);
+    }
+        .lateral h2{
+            color: white;
+            transform: rotate(-90deg);
+            margin-top: 180px;
+            font-size: 25px;
+        }
+        .icono{
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            padding: 15px;
+        }
+        .credencial .nombre{
+            transform: rotate(0.95turn);
+            font-weight: bold;
+            font-size: 20px;
+            width: 200%;
+            display: flex;
+            justify-content: center;
+            margin: -80px 0px 0px -150px;
+        }
+        
+        .credencial .puesto{
+            transform: rotate(0.95turn);
+            width: 200%;
+            font-weight: bold;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            margin: 0px 0px 0px -150px;
+        }
+        
+        .credencial .vacio{
+            transform: rotate(0.95turn);
+            width: 200%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            margin: 0px 0px 0px -150px;
+        }
+        /* parte de atras */
+        .reverso .uno{
+            transform: rotate(0.95turn);
+            width: 200%;
+            height: 70px;
+            margin: -50px 0px 0px -150px;
+        }
+        
+        .reverso .dos{
+            transform: rotate(0.95turn);
+            width: 200%;
+            height: 60px;
+            margin: 0px 0px 0px -150px;
+        }
+        
+        .reverso  .tres{
+            transform: rotate(0.95turn);
+            font-weight: bold;
+            width: 200%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            margin: 0px 0px 0px -150px;
+        }
+        
+        .reverso .lateral{
+            position: absolute;
+            width: 50px;
+            height: 80vh;
+            margin-bottom: 200px;
+        }
+        .reverso .lateral h2{
+            width: 300px;
+            margin-top: 350px;
+            margin-left: -125px;
+            transform: rotate(-90deg);
+            font-size: 30px;
+        }
+        .reverso .icono{
+            position: absolute;
+            transform: translateY(480px) translateX(130px);
+            width: 50px;
+            height: 60px;
+            padding: 15px;
+        } 
+}
+
+@media(min-width:600px){
+    .credencial, .reverso{
+        width: 320px;
+        height: 60vh;
+    }
+    /* en frente */
+    .credencial .lateral{
+        position: absolute;
+        transform: translateX(275px);
+        width: 45px;
+        height: 60vh;
+        margin-top: -15px;
+    }
+    .lateral h2{
+        color: white;
+        transform: rotate(-90deg);
+        margin-top: 180px;
+    }
+    .icono{
+        position: absolute;
+        width: 50px;
+        height: 60px;
+        padding: 15px;
+    }
+    .credencial .nombre{
+        transform: rotate(0.95turn);
+        font-weight: bold;
+        font-size: 20px;
+        width: 200%;
+        display: flex;
+        justify-content: center;
+        margin: -80px 0px 0px -150px;
+    }
+    
+    .credencial .puesto{
+        transform: rotate(0.95turn);
+        width: 200%;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .credencial .vacio{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    /* parte de atras */
+    .reverso .uno{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 70px;
+        margin: -55px 0px 0px -150px;
+    }
+    
+    .reverso .dos{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 60px;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .reverso  .tres{
+        transform: rotate(0.95turn);
+        font-weight: bold;
+        width: 200%;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .reverso .lateral{
+        position: absolute;
+        width: 50px;
+        height: 60vh;
+        margin-bottom: 200px;
+    }
+    .reverso .lateral h2{
+        width: 300px;
+        margin-top: 350px;
+        margin-left: -125px;
+        transform: rotate(-90deg);
+        font-size: 30px;
+    }
+    .reverso .icono{
+        position: absolute;
+        transform: translateY(450px) translateX(135px);
+        width: 50px;
+        height: 60px;
+        padding: 15px;
+    } 
+}
+
+/*pc*/
+@media(min-width:800px){
+    .imagen{
+        display: flex;
+    }
+    .credencial, .reverso{
+        width: 300px;
+        height: 80vh;
+    }
+    .foto{
+    width: calc(100% - 35px) ;
+    height: calc(65% - 30px);
+}
+    /* en frente */
+    .credencial .lateral{
+        position: absolute;
+        transform: translateX(255px);
+        width: 45px;
+        height: 70vh;
+        margin-top: -15px;
+    }
+    .lateral h2{
+        color: white;
+        transform: rotate(-90deg);
+        margin-top: 140px;
+    }
+    .icono{
+        position: absolute;
+        width: 50px;
+        height: 60px;
+        padding: 15px;
+    }
+    .credencial .nombre{
+        transform: rotate(0.95turn);
+        font-weight: bold;
+        font-size: 20px;
+        width: 200%;
+        display: flex;
+        justify-content: center;
+        margin: -50px 0px 0px -150px;
+    }
+
+    .credencial .nombre h3{
+        font-size: 1em;
+    }
+    
+    .credencial .puesto{
+        transform: rotate(0.95turn);
+        width: 200%;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .credencial .vacio{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    /* parte de atras */
+    .reverso .uno{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 60px;
+        margin: -50px 0px 0px -150px;
+    }
+    
+    .reverso .dos{
+        transform: rotate(0.95turn);
+        width: 200%;
+        height: 50px;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .reverso  .tres{
+        transform: rotate(0.95turn);
+        font-weight: bold;
+        width: 200%;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        margin: 0px 0px 0px -150px;
+    }
+    
+    .reverso .lateral{
+        position: absolute;
+        width: 50px;
+        height: 80vh;
+        margin-bottom: 200px;
+    }
+    .reverso .lateral h2{
+        width: 300px;
+        margin-top: 300px;
+        margin-left: -125px;
+        transform: rotate(-90deg);
+        font-size: 28px;
+    }
+    .reverso .icono{
+        position: absolute;
+        width: 50px;
+        height: 60px;
+    } 
+
+    .QR-code {
+        width: 250px;
+        height: 250px;
+        margin-left: 15%;
+        margin-top: 13%;
+    }
+}
+</style>
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Registro de asistencias </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="imagen" id="imagen">
+                {% for user in u %}
+                <div class="credencial">
+                    <div class="header">.</div>
+                    <main>
+                        <!-- nombre dept o imagen -->
+                        <div class="lateral"> <h2>FUEGO</h2> </div>
+                        <!-- icono tesca -->
+                        <img src="{% static 'tesca/tesca-negro.png' %}" class="icono">
+                        <!-- foto de perfil -->
+                        <img src="{{user.profile.image.url}}" class="foto">
+                        <!-- Datos del usuario -->
+                        <div class="nombre">
+                            <h3>{{user.information.first_name}} {{user.information.last_name}} </h3> 
+                        </div>
+                        <div class="puesto">
+                            <h3>{{user.information.puesto}}</h3> 
+                        </div>
+                        <div class="vacio">
+                            .
+                        </div>
+                    </main>
+                </div>
+            
+                <br>
+            
+                <div class="reverso">
+                    <!-- parte lateral -->
+                    <div class="lateral"> <h2>¡Yo soy tú, tu eres yo!</h2></div>
+                    <main> 
+                        <div class="uno">
+                            .
+                        </div>
+                        <div class="dos">
+                            . 
+                        </div>
+                        <div class="tres">
+                            .
+                        </div>
+                        <img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
+                    </main>
+                    <div class="footer">.</div>
+                    <img src="{% static 'tesca/tesca-negro.png' %}" class="icono">
+                </div>
+                {% endfor %}
+                
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button id="download">Descargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+    document.getElementById("download").addEventListener("click", function () {
+    const element = document.getElementById("imagen");
+    // let posibilidad = document.getElementById('fileTitle').value;
+    html2canvas(element, {
+        backgroundColor: "white", // Establecer el fondo transparente
+        scale: 5, // Aumentar la escala para mejorar la calidad
+        logging: false, // Desactivar los mensajes de registro (opcional)
+        useCORS: true, // Habilitar el uso de CORS para imágenes externas (opcional)
+        dpi: 900
+    }).then(canvas => {
+        // Crear un elemento de imagen para obtener la imagen del canvas
+        var img = new Image();
+        img.src = canvas.toDataURL("image/png");
+    
+        // Crea un enlace temporal para forzar la descarga
+        var link = document.createElement("a");
+        link.download = `fuego-credencial.png`;
+        link.href = img.src;
+        link.click();
+    });
+    });
+</script>
+{% endblock javascripts %}

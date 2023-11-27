@@ -1,0 +1,518 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Configuración de Perfil {% endblock title %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="{% static 'jspdf.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="{% static '/Contrato.css' %}">
+
+
+    <style>
+   
+    </style>
+
+</head>
+
+<body>
+    <div class="alert alert-success text-center" role="alert" style="background-color: #2dce89; ">
+        <h5 style="color: white;">Perfil de Contratación</h5>
+    </div>
+    <center>
+
+        <div class="container">
+            <form class="cons-div" id="form">
+
+
+                <!-- Sección 1 -->
+                <div id="seccion1">
+                    <!-- Campos de la primera sección -->
+
+                    <div class="form-group">
+                        <div>
+                            <label for="Nombre">Nombre </label>
+                            <input type="text" class="form-control text-center" id="Nombre" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="originario">a).- Es originario de </label>
+                        <input type="text" class="form-control text-center" id="originario" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nacio">b).- Nació el </label>
+                        <input type="text" class="form-control text-center" id="nacio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nacionalidad"> c).- De nacionalidad </label>
+                        <input type="text" class="form-control text-center" id="nacionalidad" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="civil">d).- Estado civil </label>
+                        <input type="text" class="form-control text-center" id="civil" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Sexo"> e).- Sexo</label>
+                        <input type="text" class="form-control text-center" id="Sexo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="domicilio"> f).- Con domicilio en </label>
+                        <input type="text" class="form-control text-center" id="domicilio" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CURP">g).- CURP </label>
+                        <input type="text" class="form-control text-center" id="CURP" required>
+                    </div>
+                </div>
+
+                <!-- Sección 2 -->
+                <div id="seccion2" class="hidden">
+                    <!-- Campos de la segunda sección -->
+                    <div class="form-group">
+                        <label for="RFC"> h).- R.F.C</label>
+                        <input type="text" class="form-control text-center" id="RFC" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Sociedad"> a).- Es una Sociedad Mercantil.</label>
+                        <input type="text" class="form-control text-center" id="Sociedad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="domicilios">b).- Que tiene su domicilio en </label>
+                        <input type="text" class="form-control text-center" id="domicilios" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="actividades">c).- Que entre sus actividades están </label>
+                        <input type="text" class="form-control text-center" id="actividades" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="RFCS">d).- R.F.C.- </label>
+                        <input type="text" class="form-control text-center" id="RFCS" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="eventual">relativo </label>
+                        <input type="text" class="form-control text-center" id="eventual" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precisamente"> Departamento </label>
+                        <input type="text" class="form-control text-center" id="precisamente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consistirán">Hat </label>
+                        <input type="text" class="form-control text-center" id="consistirán" required>
+                    </div>
+                </div>
+
+                <!-- Sección 3 -->
+                <div id="seccion3" class="hidden">
+                    <!-- Campos de la tercera sección -->
+                    <div class="form-group">
+                        <label for="mensual">pagarle a éste la cantidad mensual de </label>
+                        <input type="text" class="form-control text-center" id="mensual" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Declara">Fecha de ingreso</label>
+                        <input type="text" class="form-control text-center" id="Declara" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="primer">Nombre Completo </label>
+                        <input type="text" class="form-control text-center" id="primer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="primer">Parentesco o relación </label>
+                        <input type="text" class="form-control text-center" id="primerr" required>
+                    </div>
+
+                    <!-- <button type="button" id="mostrarElementosBtn" onclick="mostrarElementos()">AGREGAR </button> -->
+                    <br>
+                    <br>
+
+                    <div class="form-group hidden" id="segundo">
+                        <label for="segundoss"> Nombre Completo</label>
+                        <input type="text" class="form-control text-center" id="segundoss" required>
+                    </div>
+                    <div class="form-group hidden" id="segundos">
+                        <label for="segundosss">Parentesco o relación</label>
+                        <input type="text" class="form-control text-center" id="segundosss" required>
+                    </div>
+                    <div class="form-group hidden" id="tercers">
+                        <label for="tercerss"> Nombre Completo</label>
+                        <input type="text" class="form-control text-center" id="tercerss" required>
+                    </div>
+                    <div class="form-group hidden" id="terceros">
+                        <label for="terceross">Parentesco o relación</label>
+                        <input type="text" class="form-control text-center" id="terceross" required>
+                    </div>
+
+                </div>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="cerrarModal()">&times;</span>
+                        <!-- Contenido del modal se llenará dinámicamente aquí -->
+                    </div>
+                </div>
+                <!-- Botones de navegación -->
+                
+
+                <!-- <button class="btn btn-danger btn-sm previous"  onclick="navegar('anterior')"  >Previous</button>
+                <button class="btn btn-danger btn-sm next"  onclick="navegar('siguiente')" >Next</button></div> -->
+
+
+
+
+                <button type="button" class="btn btn-success" id="generarPDF">Generar documento PDF</button>
+                <div>
+                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#contratacion" style="background-color: #2dce89; border: #2dce89;">
+                                Contratacion indefinida
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </center>
+
+    <br>
+    <br>
+
+
+    <div class="modal fade bd-example-modal-lg" id="contratacion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Contratación indefinida</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- formulario -->
+            <div class="modal-body">
+                <div id="contenedor_formu" class="formu">   
+                    <form action="#" id="formu">
+                        <!-- datos del solicitante -->
+                        <div id="uno" class="cuadro">
+                            <header>Datos del solicitante</header>
+                            <div style="text-align: center;">
+                                <label for="Nombre">Ciudadano:</label>
+                                <input type="text" id="Nombre" placeholder="C." name="Ciudadano" maxlength="30">
+                            </div>
+                            <div>
+                                <label for="ori">Originario de:</label>
+                                <input type="text" id="ori" placeholder="Mexico" name="origen" maxlength="25">
+                                <label for="nac">Fecha de nacimiento: </label>
+                                <input type="date" id="nac" name="fecha_nacimiento" value="1980-01-01">
+                            </div>
+
+                            <div>
+                                <label for="nacio">Nacionalidad:</label>
+                                <input type="text" id="nacio" placeholder="Mexicana"  name="Nacionalidad" maxlength="20">
+                                <label for="est">Estado civil:</label>
+                                <input type="text" id="est" placeholder="Soltero(a)"  name="Estado_civil" maxlength="20">
+                            </div>
+
+                            <div>
+                                <label for="sex">Sexo</label>
+                                <select id="sex">
+                                    <option>Masculino</option>
+                                    <option>Femenino</option>
+                                </select>
+                                <label for="dom">Domicilio</label>
+                                <input type="text" id="dom" placeholder="Las lomas"  name="Domicilio" maxlength="67">
+                            </div>
+
+                            <div>
+                                <label for="curp">CURP</label>
+                                <input type="text" id="curp" placeholder="ABCD1234"  name="curp" maxlength="18">
+                                <label for="rfc">R.F.C.</label>
+                                <input type="text" id="rfc" placeholder="ABCD1234"  name="rfc" maxlength="10">
+                            </div>
+                            
+                        </div>
+                        <!-- declaraciones quinta-->
+                        <div id="dos" class="cuadro no_visible">
+                            <header>Declaraciones</header>
+                            <div>
+                                <label for="patron">Actividades Tesca</label>
+                                <input type="text" id="actividades" name="actividades" placeholder=":p" maxlength="58">
+                                <input type="text" id="patron" value="Josué Rodríguez Vásquez" hidden name="patron">
+                                <label for="pue">Puesto de trabajo</label>
+                                <input type="text" id="pue" placeholder="CEO"  name="Puesto" maxlength="26">
+                            </div>
+                            <div>
+                                <label for="act">Actividad puesto</label>
+                                <input type="text" id="act" placeholder="Gestion de proyectos"  name="actividad" maxlength="20">
+                                <label for="hrs">Horas de trabajo</label>
+                                <input type="number" id="hrs" placeholder="40 hrs"  name="Hrs trabajo">
+                            </div>
+                            <div>
+                                <label for="first-day">Dia inicio</label>
+                                <input type="text" id="first-day" placeholder="Lunes"  name="Dia_incio" maxlength="9">
+                                <label for="last-day">Dia termino</label>
+                                <input type="text" id="last-day" placeholder="Viernes"  name="Dia_termino" maxlength="9">
+                            </div>
+                            <div>
+                                <label for="inicio">Horario</label>
+                                <input type="time" id="inicio" placeholder="9:00"  name="hr_inicio">
+                                <label for="fin">A</label>
+                                <input type="time" id="fin" placeholder="17:00"  name="hr_fin">
+                                
+                            </div>
+                            <div>
+                                <label for="desca">Con descanso de</label>
+                                <input type="number" id="desca" placeholder="60 minutos"  name="descanso" maxlength="2">
+                                <label for="sue">Sueldo</label>
+                                <input type="text" id="sue" placeholder="6,000"  name="sueldo" maxlength="7">
+                            </div>
+                        </div>
+                        <div id="tres"class="cuadro no_visible">
+                            <header>Clausulas</header>
+                            <div>
+                                <label for="pay-one">Dias de pago al mes: </label>
+                                <input type="number" id="pay-one" placeholder="1"  name="Pago1" maxlength="2">
+                                <label for="pay-two"> Y </label>
+                                <input type="number" id="pay-two" placeholder="16"  name="Pago2" maxlength="2"> 
+                            </div>
+                            <!-- No se como se llena la tabla xD -->
+                            <header class="header2">Beneficiarios</header>
+                            <div id="b1">
+                                <input type="checkbox" name="check1" checked onclick="valida(this, 'b1')">
+                                <label for="xd1">Nombre completo </label>
+                                <input type="text" id="tb1" placeholder="Prueba"  name="Tabla" maxlength="35">
+                                <label for="xd2">Parentesco</label>
+                                <input type="text" id="tb2" placeholder="Hola"  name="Tabla2" maxlength="35">
+                            </div>
+                            <div id="b2">
+                                <input type="checkbox" name="check2" onclick="valida(this, 'b2')">
+                                <label for="xd1">Nombre completo </label>
+                                <input type="text" id="tb3" placeholder="Prueba"  name="Tabla" class="off" value="---" maxlength="35">
+                                <label for="xd2">Parentesco</label>
+                                <input type="text" id="tb4" placeholder="Hola"  name="Tabla2" class="off" value="---" maxlength="35">
+                            </div>
+                            <div id="b3">
+                                <input type="checkbox" name="check3" onclick="valida(this, 'b3')">
+                                <label for="xd1">Nombre completo </label>
+                                <input type="text" id="tb5" placeholder="Prueba"  name="Tabla" class="off" value="---" maxlength="35">
+                                <label for="xd2">Parentesco</label>
+                                <input type="text" id="tb6" placeholder="Hola"  name="Tabla2" class="off" value="---" maxlength="35">
+                                
+                            </div>
+                            <div style="text-align: center;">
+                                <label for="primer" style="width:auto">Fecha de inicio de trabajo</label>
+                                <input type="date" id="primer" name="Inicio_trabajo" value="2023-01-01">
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button type="button" id="btn2" value="uno" disabled class="btn btn-danger"> Anterior </button>
+                            <button type="button" id="btn1" value="tres" class="btn btn-primary"> Siguiente </button>
+                            <button type="button" id="btn3" class="btn btn-success" disabled onclick="validar(this)"> Guardar </button>
+
+                        </div>
+                        
+                    </form>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Cambiar foto de perfil formulario -->
+{% block javascripts %}
+    <script src="{% static 'Contratodeterminado.js' %}"></script>
+
+<script>
+
+//     var secciones = ["seccion1", "seccion2", "seccion3"];
+//     var indiceActual = 0;
+
+//     function mostrarSeccion(indice) {
+//         secciones.forEach(function (seccion) {
+//             document.getElementById(seccion).classList.add("hidden");
+//         });
+
+//         document.getElementById(secciones[indice]).classList.remove("hidden");
+//     }
+
+//     function actualizarBotones() {
+//         document.getElementById("anteriorBtn").disabled = indiceActual === 0;
+//         document.getElementById("siguienteBtn").disabled = indiceActual === secciones.length - 1;
+//     }
+
+//     function navegar(direccion) {
+//         if (direccion === "anterior" && indiceActual > 0) {
+//             indiceActual--;
+//         } else if (direccion === "siguiente" && indiceActual < secciones.length - 1) {
+//             indiceActual++;
+//         }
+
+//         mostrarSeccion(indiceActual);
+//         actualizarBotones();
+//     }
+
+//     // Mostrar la primera sección al cargar la página
+//     mostrarSeccion(indiceActual);
+//     actualizarBotones();
+// </script>
+
+ <script>
+//     var clics = 0;  // Variable para contar los clics
+//     function mostrarElementos() {
+//         var segundo = document.getElementById("segundo");
+//         var segundos = document.getElementById("segundos");
+//         var tercers = document.getElementById("tercers");
+//         var terceros = document.getElementById("terceros");
+//         var btnMostrarElementos = document.getElementById("mostrarElementosBtn");
+
+//         clics++;
+
+//         console.log("Clics:", clics);
+
+//         // Asegurarse de que los campos ocultos estén visibles desde el principio
+//         segundo.classList.remove("hidden");
+//         segundos.classList.remove("hidden");
+//         tercers.classList.remove("hidden");
+//         terceros.classList.remove("hidden");
+
+//         if (clics % 3 === 0) {
+//             tercers.classList.add("hidden");
+//             terceros.classList.add("hidden");
+//         } else if (clics % 3 === 1) {
+//             segundo.classList.add("hidden");
+//             segundos.classList.add("hidden");
+//         } else {
+//             // Oculta el botón después de mostrar todos los elementos
+//             btnMostrarElementos.classList.add("hidden");
+//         }
+//     }
+const atras = document.getElementById("btn2");
+const adelante = document.getElementById("btn1");
+const guardar = document.getElementById("btn3");
+const uno = document.getElementById("uno");
+const dos = document.getElementById("dos");
+const tres = document.getElementById("tres");
+const cuatro = document.getElementById("cuatro");
+const cinco = document.getElementById("cinco");
+const cls = ["no_visible", "visible"];
+let contador = 1;
+
+adelante.addEventListener("click", ()=>{
+    if(contador != 3){
+        contador++;
+        adelante.disabled = false;
+        atras.disabled = false;
+        guardar.disabled = true;
+        aumentar(contador);
+        if (contador == 3){
+            adelante.disabled = true;
+            //este es solo para habilitar el boton de guardar
+            guardar.disabled = false;
+        }
+            
+        
+    }        
+});
+atras.addEventListener("click", ()=>{
+    if(contador != 1){
+        contador--;
+        atras.disabled = false;
+        adelante.disabled = false;
+        guardar.disabled = true;
+        aumentar(contador);
+        if(contador == 1)
+            atras.disabled = true;
+    }
+});
+//es para los checks y "apaga" los input
+function valida(check, id){
+    div = document.getElementById(id);
+    inputs = div.querySelectorAll('input[type=text]');
+    if(check.checked){
+        for (let i = 0; i < inputs.length; i++){ 
+            inputs[i].classList.remove('off');
+            inputs[i].classList.add('on');
+            inputs[i].value = "";
+        }
+    }
+        
+    else{
+        for (let i = 0; i < inputs.length; i++){ 
+            inputs[i].classList.remove('on');
+            inputs[i].classList.add('off');
+            inputs[i].value = "---";
+        }
+    }
+        
+    
+}
+//se encarga de cambiar los cuadros de las preguntas
+function aumentar(contador){
+    switch(contador){
+        case 1:
+            uno.classList.remove(cls[0]), uno.classList.add(cls[1]);
+            dos.classList.remove(cls[1]), dos.classList.add(cls[0]);
+            break;
+        case 2:
+            uno.classList.remove(cls[1]), uno.classList.add(cls[0]);
+            dos.classList.remove(cls[0]), dos.classList.add(cls[1]);
+            tres.classList.remove(cls[1]), tres.classList.add(cls[0]);
+            break;
+        case 3:
+            dos.classList.remove(cls[1]), dos.classList.add(cls[0]);
+            tres.classList.remove(cls[0]), tres.classList.add(cls[1]);
+            break;
+    }
+}
+
+//valida si hay campos vacios
+
+function validar(boton){
+    let lista = [];
+    bandera = true;
+    var formulario = document.getElementById("formu");
+    //pongo -1 porque busca otro campo que no existe xD
+    for (var i=0; i < formulario.length - 1; i++) {
+            if (formulario[i].value.length == 0){
+                lista.push(formulario[i].name)
+              //  bandera = false;        
+            }
+        }
+    if (bandera == false) {
+        Swal.fire({
+            icon: "error",
+            title: "Campos Vacios",
+            text: lista,
+        });
+    }else
+enviar()
+
+}
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+{% endblock javascripts %}

@@ -1,0 +1,219 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Finiquito {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Carta finiquito </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="body1">
+                <form class="cons-div" id="form">
+                    <input type="text" class="form-control text-center" id="nombre"
+                        value="{{ us1.information.first_name }} {{ us1.information.last_name }}">
+            
+                    <div class="container-general">
+                        <div class="container-segundo">
+                            <h4>Salario mensual</h4>
+                            <input type="text" class="form-control text-center" id="salariom" placeholder="ingresa el Salario mensual"
+                                onkeyup="calculosalario()">
+                        </div>
+                        <div class="container-segundo">
+                            <h4>Salario diario</h4>
+                            <input type="text" class="form-control text-center" id="salariod">
+                        </div>
+                    </div>
+            
+                    <div class="container-general">
+                        <div class="container-segundo">
+                            <h4>Dias devengados</h4>
+                            <input type="text" class="form-control text-center" id="devengado" onkeyup="calculodevengado()">
+                        </div>
+                        <div class="container-segundo">
+                            <h4> importe</h4>
+                            <input type="text" class="form-control text-center" id="importe-devengado">
+                        </div>
+                    </div>
+            
+                    <div class="container-general">
+                        <div class="container-segundo">
+                            <h4>Vacaciones no gozadas</h4>
+                    <input type="text" class="form-control text-center" id="pendientes" onkeyup="calculodevacaspend()">
+                        </div>
+                        <div class="container-segundo">
+                            <h4> importe</h4>
+                            <input type="text" class="form-control text-center" id="importe-vacaciones">
+                        </div>
+                    </div>
+            
+                    <h4>Prima vacacional</h4>
+                    <input type="text" class="form-control text-center" id="prima-vacacional">
+            
+            
+            
+                    <div class="container-general">
+                        <div class="container-segundo">
+                            <h4>Fecha de Alta</h4>
+                            <input type="date" class="form-control text-center" id="dia-entrada" onchange="calcularDiasTranscurridos()">
+                        </div>
+                        <div class="container-segundo">
+                            <h4>Fecha de baja</h4>
+                            <input type="date" class="form-control text-center" id="dia-salida" onchange="calcularDiasTranscurridos()">
+                        </div>
+                    </div>
+            
+                    <div class="container-general">
+                        <div class="container-segundo">
+                            <h4>Dias trabajados en el año</h4>
+                    <input type="text" class="form-control text-center" id="dias-transcurridos" readonly>
+                    <input type="text" name="" id="parte-aguinaldo" style="display: none;" readonly>
+                        </div>
+                        <div class="container-segundo">
+                            <h4>aguinaldo proporcional</h4>
+                            <input type="text" class="form-control text-center" id="aguinaldo">
+                            <input type="text" class="form-control text-center" id="total" style="display: none;" readonly>
+                        </div>
+                    </div>
+            
+                    
+            
+            
+                    <!-- ya solo falta el aguinaldo y el diseño de tener el valor a un lado, la formula de 3 del aguinaldo esta en la libreta -->
+                    <button type="submit" class="btn btn-primary mb-4" id="generarPDF"> Generar documento </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %}
+<style>
+    .body1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2%;
+    }
+
+    .cons-div {
+        width: 70%;
+        padding: 3%;
+        text-align: center;
+    }
+
+    .form-control {
+        width: 90%;
+        border-radius: 8px;
+    }
+
+    .container-general {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        margin: 2%;
+    }
+
+    .container-segundo {
+        width: 50%;
+        height: 100%;
+    }
+</style>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="{% static 'jspdf.min.js' %}"></script>
+<script src="{% static 'finiquito.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script>
+    function calculosalario() {
+        var salmensual = document.getElementById("salariom");
+        var calculo = (parseFloat(salmensual.value) / 30);
+        diario = calculo.toFixed(2);
+        $('#salariod').val(diario);
+    }
+
+    function calculodevengado() {
+        var devengado = document.getElementById("devengado");
+        var diario = document.getElementById("salariod");
+        var calculod = parseFloat(devengado.value) * parseFloat(diario.value);
+        deven = calculod.toFixed(2);
+        $('#importe-devengado').val(deven);
+    }
+
+    function calculodevacaspend() {
+        var vacacionespend = document.getElementById("pendientes");
+        var diario = document.getElementById("salariod");
+        var calculopend = parseFloat(diario.value) * parseFloat(vacacionespend.value);
+        pendiente = calculopend.toFixed(2);
+        $('#importe-vacaciones').val(pendiente);
+
+        var calculoprima = pendiente * 0.25;
+        prima = calculoprima.toFixed(2);
+        $('#prima-vacacional').val(prima);
+    }
+
+    function calcularDiasTranscurridos() {
+        const fechaSalida = new Date(document.getElementById('dia-salida').value);
+        const fechaEntrada = new Date(document.getElementById('dia-entrada').value);
+        const diferenciaEnDias = calcularDiferenciaEnDias(fechaEntrada, fechaSalida);
+
+        document.getElementById('dias-transcurridos').value = diferenciaEnDias;
+
+        calcularAguinaldo();
+    }
+
+    function calcularDiferenciaEnDias(fechaEntrada, fechaSalida) {
+        if (fechaEntrada.getFullYear() !== fechaSalida.getFullYear()) {
+            // Si las fechas tienen años diferentes, calcular días desde el 1 de enero del año de dia-salida
+            const primerDiaDelAnio = new Date(fechaSalida.getFullYear(), 0, 1);
+            const diferenciaEnTiempo = fechaSalida - primerDiaDelAnio;
+            return Math.floor(diferenciaEnTiempo / (1000 * 60 * 60 * 24));
+        } else {
+            // Si las fechas tienen el mismo año, calcular la diferencia directa entre ellas
+            const diferenciaEnTiempo = fechaSalida - fechaEntrada;
+            return Math.floor(diferenciaEnTiempo / (1000 * 60 * 60 * 24));
+        }
+    }
+
+    function calcularAguinaldo() {
+        const diasTrabajados = parseFloat(document.getElementById('dias-transcurridos').value);
+        const salarioDiario = parseFloat(document.getElementById('salariod').value);
+    
+        if (!isNaN(diasTrabajados) && !isNaN(salarioDiario)) {
+            const aguinaldo = (diasTrabajados * 15) / 365;
+            const aguinaldo2 =  salarioDiario * aguinaldo;
+            document.getElementById('parte-aguinaldo').value = aguinaldo.toFixed(2);
+            document.getElementById('aguinaldo').value = aguinaldo2.toFixed(2);
+            total();
+        } else {
+            // Manejo de errores en caso de que los campos no contengan valores numéricos válidos
+            document.getElementById('aguinaldo').value = 'Error';
+        }
+    }
+
+    function total(){
+        const cant1 = parseFloat(document.getElementById('importe-devengado').value);
+        const cant2 = parseFloat(document.getElementById('importe-vacaciones').value);
+        const cant3 = parseFloat(document.getElementById('prima-vacacional').value);
+        const cant4 = parseFloat(document.getElementById('aguinaldo').value);
+
+        const total = cant1 + cant2 + cant3 + cant4;
+        document.getElementById('total').value = total.toFixed(2);
+    }
+    
+    
+
+</script>
+{% endblock javascripts %}

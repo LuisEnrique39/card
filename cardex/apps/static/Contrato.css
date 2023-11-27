@@ -1,0 +1,86 @@
+.visible{
+    display: block;
+}
+.no_visible{
+    display: none;
+}
+.formu{
+    padding: 15px;
+    margin: 10px;
+    border: 3px ridge;
+}
+.cuadro header{
+    color: white;
+    background-color: #fffc64;
+    padding: 10px;
+    font-weight: bolder;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 24px;
+    color: black;
+}
+.botones{
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+}
+/* para datos del solicitante */
+.cuadro div{
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.cuadro label{
+    width: 170px;
+    margin-left: 0;
+    text-align: center;
+    font-weight: bold;
+}
+.cuadro input, select{
+    width: 25%;
+    text-align: center;
+}
+
+input:disabled, button:disabled{
+    cursor: not-allowed;
+}
+
+input[type="checkbox"]{
+    width: 20px;
+}
+
+.off{
+    opacity: 0.1;
+
+}
+.on{
+    opacity: 1;
+}
+.cuadro .header2{
+    background-color: #f59300;
+    padding: 5px;
+}
+@media(max-width:768px){
+    .cuadro{
+        text-align: center;
+    }
+    .cuadro div{
+        display: block;
+    }
+    .cuadro label{
+        display: block;
+        text-align: center;
+        padding: -10px;
+        width: auto;
+    }
+    .cuadro input, select{
+        margin: 15px;
+        border: 1px solid;
+        width: 80%;
+        text-align: center;
+    }
+
+    .botones button{
+        margin: 10px;
+    }
+}

@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Renuncia {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center">Carta de renuncia </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <div class="body1">
+                <form class="cons-div" id="form">
+                    <input type="text" class="form-control text-center" id="nombre" value="{{ us1.information.first_name }} {{ us1.information.last_name }}">
+                    <button type="submit" class="btn btn-primary mb-4" id="generarPDF"> Generar documento </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %}
+<style>
+
+    .body1{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2%;
+    }
+
+    .cons-div{
+        width: 70%;
+        padding: 3%;
+        text-align: center;
+    }
+
+    .form-control{
+        margin: 1%;
+    }
+</style>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script src="{% static 'jspdf.min.js' %}"></script>
+<script src="{% static 'renuncia.js' %}"></script>
+{% endblock javascripts %}

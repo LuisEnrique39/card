@@ -1,0 +1,203 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Perfil medico {% endblock title %}
+
+{% block content %}
+{% load static %}
+
+
+<div class="col-xl-12 order-xl-1">
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h3 class="mb-0 text-center"><a href="{% url 'medicos' %}" class="btn btn-success"
+                            style="margin: 1%; border-radius: 12px;"><i class="fa fa-arrow-circle-left"></i>&nbsp;
+                            volver </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="container d-flex align-items-center text-center">
+                <img class="card-img-top" src="{% static 'batman.png' %}" alt="Card image cap"
+                    style="width: 120px; height: 120px;">
+                <h2>{{user.information.first_name}} {{user.information.last_name}}</h2>
+            </div>
+
+
+            <div class="container align-items-center justify-content-center text-center mt-6">
+                <div class="row">
+                    <div class="col-sm">
+                        <!-- perfil medico -->
+                        <p>aqui en estos dos botones van las cosas de gael, el dropdown se encuentra abajao y el modal esta en un apartado especial de modales </p>
+                        <h3><i class="fa-solid fa-hospital-user"></i> Perfil medico</h3>
+
+                    <p>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modalmedico">
+                            Actualizar
+                        </button>
+
+                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Ver
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            {% if user.datosmedicos %}
+                            <ul class="list-group">
+                                <li class="list-group-item"><strong>Edad: </strong>{{user.datosmedicos.edad}} años</li>
+                                <li class="list-group-item"><strong>Estatura: </strong>{{user.datosmedicos.estatura}} cm
+                                </li>
+                                <li class="list-group-item"><strong>Peso: </strong>{{user.datosmedicos.peso}} kg</li>
+                                <li class="list-group-item"><strong>Tipo de sangre: </strong>
+                                    {{user.datosmedicos.sangre}}</li>
+                                <li class="list-group-item"><strong>Alergias: </strong>{{user.datosmedicos.alergias}}
+                                </li>
+                                <li class="list-group-item"><strong>Enfermedad:
+                                    </strong>{{user.datosmedicos.enfermedad}}</li>
+                                <li class="list-group-item"><strong>Usa lentes: </strong>{{user.datosmedicos.lentes}}
+                                </li>
+                                <li class="list-group-item"><strong>Consume bebidad alcoholicas:
+                                    </strong>{{user.datosmedicos.tomas}}</li>
+                                <li class="list-group-item"><strong>Fuma: </strong>{{user.datosmedicos.fumas}}</li>
+                                <li class="list-group-item"><strong>Deporte: </strong>{{user.datosmedicos.deporte}}</li>
+                                <li class="list-group-item"><strong>Horas de Sueño: </strong>{{user.datosmedicos.sueño}}
+                                    horas</li>
+                                <li class="list-group-item"><strong>Tiene sus dos vacunas:
+                                    </strong>{{user.datosmedicos.vacuna}}</li>
+                                <li class="list-group-item"><strong>Se ha contagiado de COVID:
+                                    </strong>{{user.datosmedicos.covid}}</li>
+                            </ul>
+                            {% else %}
+                            <h2 class="text-red"><i class="fa-solid fa-circle-exclamation"></i> te falta llenar tu
+                                informacion medica
+                            </h2>
+                            {% endif %}
+                        </div>
+                    </div>
+                        <!-- fin perfil medico -->
+                    </div>
+                    <div class="col-sm">
+                        <h3><i class="fa-solid fa-file-prescription"></i> Justificantes medicos</h3>
+                    <p>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modalsubirjust">
+                            Adjuntar
+                        </button>
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target=".bd-example-modal-lg">
+                            Ver
+                        </button>
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal datos medicos -->
+        <div class="modal fade" id="Modalmedico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header align-items-center justify-content-center text-center">
+                        <h5 class="modal-title" id="exampleModalLabel">Actualizar datos medicos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body align-items-center justify-content-center text-center">
+                        aqui van los campos de registro de datos medicos gael
+                    </div>
+                    <div class="modal-footer align-items-center justify-content-center text-center">
+                        <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal ver justificantes medicos -->
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header align-items-center justify-content-center text-center">
+                        <h5 class="modal-title" id="exampleModalLabel">Justificantes medicos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body align-items-center justify-content-center text-center">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Titulo</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Documento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in justificantes %}
+                                <tr>
+                                    <th scope="row">{{ a.title }}</th>
+                                    <td>{{ a.dateTimeOfUpload }}</td>
+                                    <td>
+                                        <button class="btn btn-success" type="button" data-toggle="collapse"
+                                            data-target="#collapseDoc{{a.id}}" aria-expanded="false"
+                                            aria-controls="collapseDoc{{a.id}}">
+                                            Ver
+                                        </button>
+                                        <div class="collapse" id="collapseDoc{{a.id}}">
+                                            <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="200px"
+                                                height="200px" id="documentPDF{{a.id}}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal adjuntar justificantes medicos -->
+        <div class="modal fade" id="Modalsubirjust" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header align-items-center justify-content-center text-center">
+                        <h5 class="modal-title" id="exampleModalLabel">Adjuntar Justificantes medicos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'uploadmedicjust' user.username %}" method="POST"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body align-items-center justify-content-center text-center">
+                            <input type="hidden" class="form-control" name="idField" value="{{user.id}}" required>
+                            <input type="text" class="form-control" name="fileTitle" placeholder="Ingresa un titulo"
+                                style="margin-bottom: 2%;">
+                            <input type="file" class="form-control" name="uploadedFile">
+                        </div>
+                        <div class="modal-footer align-items-center justify-content-center text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+{% include "includes/footer.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+{% endblock javascripts %}
